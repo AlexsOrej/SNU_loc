@@ -1,0 +1,125 @@
+[27-Oct-2022 21:31:48 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(9): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:32:13 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(6): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:32:17 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(6): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:32:37 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(9): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:32:42 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(9): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:35:40 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(9): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:36:14 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(9): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:37:03 UTC] PHP Fatal error:  Uncaught Error: Call to a member function InfoByCompleto() on null in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 9
+[27-Oct-2022 21:37:27 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function InfoByCompleto() in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 9
+[27-Oct-2022 21:37:58 UTC] PHP Fatal error:  Uncaught Error: Class 'Database' not found in /home/normalizacion/public_html/snu/Models/Producto.php:41
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(9): Producto->__CONSTRUCT()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Models/Producto.php on line 41
+[27-Oct-2022 21:40:03 UTC] PHP Warning:  require_once(Models/database.php): failed to open stream: No such file or directory in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:40:03 UTC] PHP Fatal error:  require_once(): Failed opening required 'Models/database.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:40:41 UTC] PHP Warning:  require_once(Models/database.php): failed to open stream: No such file or directory in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:40:41 UTC] PHP Fatal error:  require_once(): Failed opening required 'Models/database.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:40:45 UTC] PHP Warning:  require_once(Models/database.php): failed to open stream: No such file or directory in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:40:45 UTC] PHP Fatal error:  require_once(): Failed opening required 'Models/database.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:44:54 UTC] PHP Warning:  require_once(Models/database.php): failed to open stream: No such file or directory in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:44:54 UTC] PHP Fatal error:  require_once(): Failed opening required 'Models/database.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:46:03 UTC] PHP Warning:  require_once(Models/database.php): failed to open stream: No such file or directory in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 3
+[27-Oct-2022 21:46:03 UTC] PHP Fatal error:  require_once(): Failed opening required 'Models/database.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 3
+[27-Oct-2022 21:46:33 UTC] PHP Fatal error:  Uncaught Error: Class 'Producto' not found in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:11
+Stack trace:
+#0 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 11
+[27-Oct-2022 21:47:07 UTC] PHP Warning:  require_once(Models/database.php): failed to open stream: No such file or directory in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:47:07 UTC] PHP Fatal error:  require_once(): Failed opening required 'Models/database.php' (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/normalizacion/public_html/snu/Controllers/productos.Controller.php on line 3
+[27-Oct-2022 21:56:58 UTC] PHP Fatal error:  Uncaught Error: Class 'Producto' not found in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 9
+[27-Oct-2022 21:57:27 UTC] PHP Fatal error:  Uncaught Error: Class 'Producto' not found in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 9
+[27-Oct-2022 21:58:40 UTC] PHP Fatal error:  Uncaught Error: Class 'Producto' not found in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:13
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(20): export()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 13
+[27-Oct-2022 22:00:48 UTC] PHP Fatal error:  Uncaught Error: Class 'Producto' not found in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:9
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(16): export()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 9
+[27-Oct-2022 22:04:35 UTC] PHP Fatal error:  Uncaught Error: Class 'Producto' not found in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:10
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(17): export()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 10
+[27-Oct-2022 22:19:18 UTC] PHP Parse error:  syntax error, unexpected '=' in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 54
+[27-Oct-2022 22:41:22 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ASC
+        `productos`.`ubicacion_id`' at line 34 in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:46
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(46): PDOStatement->execute()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 46
+[27-Oct-2022 22:42:23 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ASC
+        `productos`.`ubicacion_id`' at line 34 in /home/normalizacion/public_html/snu/Informes/infoCompleto.php:46
+Stack trace:
+#0 /home/normalizacion/public_html/snu/Informes/infoCompleto.php(46): PDOStatement->execute()
+#1 {main}
+  thrown in /home/normalizacion/public_html/snu/Informes/infoCompleto.php on line 46
+[07-Sep-2023 16:44:00 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'normalizacion_snu.productos' doesn't exist in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php:45
+Stack trace:
+#0 /home2/normalizacion/public_html/snu/Informes/infoCompleto.php(45): PDOStatement->execute()
+#1 {main}
+  thrown in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php on line 45
+[07-Sep-2023 16:44:02 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'normalizacion_snu.productos' doesn't exist in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php:45
+Stack trace:
+#0 /home2/normalizacion/public_html/snu/Informes/infoCompleto.php(45): PDOStatement->execute()
+#1 {main}
+  thrown in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php on line 45
+[07-Sep-2023 16:44:05 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'normalizacion_snu.productos' doesn't exist in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php:45
+Stack trace:
+#0 /home2/normalizacion/public_html/snu/Informes/infoCompleto.php(45): PDOStatement->execute()
+#1 {main}
+  thrown in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php on line 45
+[07-Sep-2023 16:44:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'normalizacion_snu.productos' doesn't exist in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php:45
+Stack trace:
+#0 /home2/normalizacion/public_html/snu/Informes/infoCompleto.php(45): PDOStatement->execute()
+#1 {main}
+  thrown in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php on line 45
+[07-Sep-2023 16:44:15 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'normalizacion_snu.productos' doesn't exist in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php:45
+Stack trace:
+#0 /home2/normalizacion/public_html/snu/Informes/infoCompleto.php(45): PDOStatement->execute()
+#1 {main}
+  thrown in /home2/normalizacion/public_html/snu/Informes/infoCompleto.php on line 45
