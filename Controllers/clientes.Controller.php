@@ -178,26 +178,64 @@ class ClientesController
 
     public function UsoIndividualResultado()
     {
-
-
         $cliente = $_REQUEST['clientes'];
         $inicio = $_REQUEST['startDate'];
         $fin = $_REQUEST['endDate'];
-        // $this->estadisticas->MigrarData($cliente);
+          $this->estadisticas->MigrarData($cliente);
+        // $ModulosEstadistica = $this->estadisticas->ModulosEstadistica($inicio, $fin, $cliente);
+        
+        $UsoByRol = $this->estadisticas->UsoByRol($cliente, $inicio, $fin);
+        require_once 'Views/Cliente/usoindividualresultado.php';
+    }
+    
+    
+    //**USO */
+    
+    public function UsoByRol()
+    {
+        $cliente = $_REQUEST['cliente'];
+        $inicio = $_REQUEST['inicio'];
+        $fin = $_REQUEST['fin'];   
+        $UsoByRol = $this->estadisticas->UsoByRol($cliente, $inicio, $fin);
+        require_once 'Views/Cliente/Uso/usoPorRol.php';
+    }
+
+
+    public function DatosGrales()
+    {
+        $cliente = $_REQUEST['cliente'];
+        $inicio = $_REQUEST['inicio'];
+        $fin = $_REQUEST['fin'];
         $totaliniciosession = $this->estadisticas->TotalInicioSession($inicio, $fin, $cliente);
-        $totalaccesomodulos = $this->estadisticas->TotalAccesoModulos($inicio, $fin, $cliente);        
+        $totalaccesomodulos = $this->estadisticas->TotalAccesoModulos($inicio, $fin, $cliente);
         $usuariosactivos = $this->estadisticas->UsuariosActivos($cliente);
         $usuariosconactividad = $this->estadisticas->UsuariosConActividad($inicio, $fin, $cliente);
         $modulosactivos = $this->estadisticas->ModulosActivos($inicio, $fin, $cliente);
         $ultimoiniciosession = $this->estadisticas->UltimoInicioSession($inicio, $fin, $cliente);
         $usuarioconmasactividad = $this->estadisticas->UsuarioConMasactividad($inicio, $fin, $cliente);
-        $ModulosEstadistica = $this->estadisticas->ModulosEstadistica($inicio, $fin, $cliente);
-        $DatosByUsuario = $this->estadisticas->DatosByUsuario($cliente, $inicio, $fin);        
-        $UsoByRol = $this->estadisticas->UsoByRol($cliente, $inicio, $fin);        
-        require_once 'Views/Cliente/usoindividualresultado.php';
-        require_once 'Views/Layout/footer.php';
-        require_once 'Views/Layout/filtro.php';
+        require_once 'Views/Cliente/Uso/datosgrales.php';
     }
+
+    public function UsabilidadModUsu()
+    {
+        $cliente = $_REQUEST['cliente'];
+        $inicio = $_REQUEST['inicio'];
+        $fin = $_REQUEST['fin'];
+        $ModulosEstadistica = $this->estadisticas->ModulosEstadistica($inicio, $fin, $cliente);
+        require_once 'Views/Cliente/Uso/usabilidadModUsu.php';
+    }
+
+    public function DatosPorUsuario()
+    {
+        $cliente = $_REQUEST['cliente'];
+        $inicio = $_REQUEST['inicio'];
+        $fin = $_REQUEST['fin'];
+        $DatosByUsuario = $this->estadisticas->DatosByUsuario($cliente, $inicio, $fin);
+        require_once 'Views/Cliente/Uso/datosPorUsuario.php';
+    }
+
+
+    //**USO */
 
     public function FiltroServicio()
     {

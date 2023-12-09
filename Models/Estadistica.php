@@ -374,10 +374,11 @@ class Estadistica
     function TotalInicioSession($inicio, $fin, $cliente)
     {
         try {
-            $sql = "SELECT COUNT(e.url) as total 
-                FROM estadisticas e JOIN usuarios u ON e.usuario = CONCAT(u.nombres,' ',u.apellidos) 
-                AND u.cliente_id=:id
-                AND e.fecha_hora BETWEEN :inicio AND :fin";
+            $sql = "SELECT COUNT(e.controlador) as total 
+            FROM estadisticasUso e 
+                 JOIN usuarios u ON e.usuario = u.id 
+            AND u.cliente_id=:id               
+            AND e.fecha_hora BETWEEN :inicio AND :fin";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id', $cliente);
             $stmt->bindParam(':inicio', $inicio);
@@ -433,8 +434,12 @@ class Estadistica
     {
         $squema = $this->Squema($cliente);
         try {
-            $sql = "SELECT COUNT(e.id) as total 
-                FROM $squema.estadisticas e  
+            $sql = "SELECT COUNT(e.id) as total
+            FROM $squema.estadisticasUso e                
+                INNER JOIN normalizacion_snu.controllers c 
+                        ON e.controlador=c.controller 
+                JOIN normalizacion_snu.ofertas ofer 
+                        ON c.modulo_id= ofer.id 
                 WHERE e.fecha_hora BETWEEN :inicio AND :fin";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':inicio', $inicio);
@@ -472,7 +477,7 @@ class Estadistica
         $squema = $this->Squema($cliente);
         try {
             $sql = "SELECT COUNT(DISTINCT e.usuario) as total 
-            FROM $squema.estadisticas e 
+            FROM $squema.estadisticasUso e 
             WHERE e.fecha_hora BETWEEN :inicio AND :fin";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':inicio', $inicio);
@@ -490,7 +495,7 @@ class Estadistica
         $squema = $this->Squema($cliente);
         try {
             $sql = "SELECT COUNT(DISTINCT e.usuario) as total 
-            FROM $squema.estadisticas e 
+            FROM $squema.estadisticasUso e 
             WHERE e.fecha_hora BETWEEN :inicio AND :fin";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':inicio', $inicio);
@@ -525,10 +530,11 @@ class Estadistica
     function UsuarioConMasactividad($inicio, $fin, $cliente)
     {
         // $squema = $this->Squema($cliente);
+        // echo  $inicio, $fin, $cliente;
         try {
-            $sql = "SELECT COUNT(e.usuario) as total, e.usuario, r.rol
-            FROM estadisticas e 
-            JOIN usuarios u ON e.usuario = CONCAT(u.nombres,' ',u.apellidos) 
+            $sql = "SELECT COUNT(e.usuario) as total, r.rol, CONCAT(u.nombres,' ',u.apellidos) as usuario
+            FROM estadisticasUso e 
+            JOIN usuarios u ON e.usuario = u.id 
             JOIN rols r ON u.rol_id = r.id 
             WHERE e.fecha_hora BETWEEN :inicio AND :fin
             AND u.cliente_id=:cliente
@@ -566,51 +572,65 @@ class Estadistica
 
         return $parametros;
     }
+    public function IdUsuario($usuario)
+    {
+        try {
 
+            $sql0 = "SELECT id FROM usuarios u where CONCAT(u.nombres,' ',u.apellidos)=:nombre";
+            $stmt = $this->pdo->prepare($sql0);
+            $stmt->bindParam(':nombre', $usuario);
+            $stmt->execute();
+            $bd_cliente = $stmt->fetch(PDO::FETCH_OBJ);
+            $id = $bd_cliente->id;
+            return $id;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
     public function MigrarData($cliente)
     {
         $squema = $this->Squema($cliente);
-
-
         try {
             // Consulta para seleccionar datos de la tabla de origen
             $sqlSelect = "SELECT * FROM $squema.estadisticas";
             $stmtSelect = $this->pdo->query($sqlSelect);
-
+            //////======/////    
+            $sqlSelect0 = "SELECT * FROM $squema.estadisticasUso";
+            $stmtSelect0 = $this->pdo->query($sqlSelect0);
+            //////======/////        
             // Verificar si hay resultados
-            if ($stmtSelect->rowCount() > 0) {
-                // Iterar sobre los resultados y realizar la inserción en la tabla de destino
-                while ($row = $stmtSelect->fetch(PDO::FETCH_ASSOC)) {
+            if ($stmtSelect0->rowCount() == 0) {
+                if ($stmtSelect->rowCount() > 0) {
+                    // Iterar sobre los resultados y realizar la inserción en la tabla de destino
+                    while ($row = $stmtSelect->fetch(PDO::FETCH_ASSOC)) {
+                        $url_param =  $this->obtenerParametrosDeURL($row['url']);
+                        $columna1 = $row['ip'];
+                        $columna2 =  isset($url_param['c']) ? $url_param['c'] : '0';
+                        $columna3 = isset($url_param['a']) ? $url_param['a'] : '0';
+                        $columna4 = $row['navegador'];
+                        $columna5 =  $this->IdUsuario($row['usuario']) ? $this->IdUsuario($row['usuario']) : 0;
+                        $columna6 = $row['fecha_hora'];
 
-                    $url_param =  $this->obtenerParametrosDeURL($row['url']);
-                    // echo'<pre>';
-                    // print_r($url_param);
-                    // echo'</pre>';
-                    // print_r($url_param['a']);
-                    $columna1 = $row['ip'];
-                    $columna2 =  isset($url_param['c']) ? $url_param['c'] : '0';
-                    $columna3 = isset($url_param['a']) ? $url_param['a'] : '0';
-                    $columna4 = $row['navegador'];
-                    $columna5 = $row['usuario'];
-                    $columna6 = $row['fecha_hora'];
-
-                    // Consulta para insertar en la tabla de destino
-                    $sqlInsert = "INSERT INTO $squema.estadisticasUso (ip, controlador, accion,	navegador,usuario,fecha_hora) 
+                        // Consulta para insertar en la tabla de destino
+                        $sqlInsert = "INSERT INTO $squema.estadisticasUso (ip, controlador, accion,	navegador,usuario,fecha_hora) 
                                   VALUES (:ip, :controlador,:accion,:navegador,:usuario,:fecha_hora)";
-                    $stmtInsert = $this->pdo->prepare($sqlInsert);
-                    $stmtInsert->bindParam(':ip', $columna1);
-                    $stmtInsert->bindParam(':controlador', $columna2);
-                    $stmtInsert->bindParam(':accion', $columna3);
-                    $stmtInsert->bindParam(':navegador', $columna4);
-                    $stmtInsert->bindParam(':usuario', $columna5);
-                    $stmtInsert->bindParam(':fecha_hora', $columna6);
-                    $stmtInsert->execute();
-                }
+                        $stmtInsert = $this->pdo->prepare($sqlInsert);
+                        $stmtInsert->bindParam(':ip', $columna1);
+                        $stmtInsert->bindParam(':controlador', $columna2);
+                        $stmtInsert->bindParam(':accion', $columna3);
+                        $stmtInsert->bindParam(':navegador', $columna4);
+                        $stmtInsert->bindParam(':usuario', $columna5);
+                        $stmtInsert->bindParam(':fecha_hora', $columna6);
+                        $stmtInsert->execute();
+                    }
 
-                echo "Datos transferidos con éxito.";
+                    echo "Datos transferidos con éxito.";
+                } else {
+                    echo "No se encontraron datos en la tabla de origen.";
+                }
             } else {
-                echo "No se encontraron datos en la tabla de origen.";
+                echo "Ya existen registros en la tabla de destino.";
             }
         } catch (PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -710,28 +730,38 @@ class Estadistica
     {
         try {
             $squema = $this->Squema($cliente);
-            $sql = "SELECT e.usuario, COUNT(*) AS cantidad_usos,
-                            c.controller, 
-                            ofer.oferta, 
-                            car.cargo, 
-                            rls.rol,
-                            MAX(e.fecha_hora) AS ultima_fecha_hora
-        FROM $squema.estadisticas e
-        INNER JOIN normalizacion_snu.controllers c 
-                    ON e.url LIKE CONCAT('%c=', c.controller, '%')
-                JOIN normalizacion_snu.ofertas ofer 
-                    ON c.modulo_id= ofer.id
-                JOIN normalizacion_snu.usuarios usu 
-                    ON e.usuario = CONCAT(usu.nombres,' ',usu.apellidos)
-                JOIN $squema.cargos car 
-                    ON usu.cargo_id = car.id  
-                JOIN normalizacion_snu.rols rls 
-                    ON usu.rol_id = rls.id  
-        WHERE e.url LIKE '%c=%'
-            AND ofer.oferta=:modulo
-            AND e.fecha_hora BETWEEN :inicio AND :fin
-        GROUP BY e.usuario, c.controller
-        ORDER BY cantidad_usos DESC
+            $sql = "SELECT
+            COUNT(*) AS cantidad_usos,   
+            c.controller,
+            ofer.oferta,
+            car.cargo,
+            rls.rol,
+            MAX(e.fecha_hora) AS ultima_fecha_hora,
+            CONCAT(usu.nombres, ' ', usu.apellidos) AS usuarios
+        FROM
+        $squema.estadisticasUso e
+        INNER JOIN normalizacion_snu.controllers c
+        ON
+            e.controlador = c.controller
+        JOIN normalizacion_snu.ofertas ofer
+        ON
+            c.modulo_id = ofer.id
+        JOIN normalizacion_snu.usuarios usu
+        ON
+            e.usuario = usu.id
+        JOIN $squema.cargos car ON
+            usu.cargo_id = car.id
+        JOIN normalizacion_snu.rols rls
+        ON
+            usu.rol_id = rls.id
+        WHERE
+            ofer.oferta = :modulo AND fecha_hora BETWEEN :inicio AND :fin
+        GROUP BY
+            e.usuario,
+            c.controller
+        ORDER BY
+            cantidad_usos
+        DESC
         LIMIT 1";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':modulo', $modulo);
@@ -819,7 +849,9 @@ class Estadistica
         try {
 
             $sql = "SELECT r.rol, COUNT(e.usuario) as sessionesByrol 
-            FROM rols r JOIN usuarios u ON r.id=u.rol_id JOIN estadisticas e on CONCAT(u.nombres,' ',u.apellidos)= e.usuario 
+            FROM rols r 
+            JOIN usuarios u ON r.id=u.rol_id 
+            JOIN estadisticasUso e on u.id= e.usuario 
             WHERE e.fecha_hora BETWEEN :inicio AND :fin 
             AND u.cliente_id=:cliente
             GROUP by r.rol";
@@ -829,8 +861,8 @@ class Estadistica
             $stmt->bindParam(':cliente', $cliente);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_OBJ);
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (PDOException $th) {
+            throw $th;
         }
     }
 
@@ -859,6 +891,17 @@ class Estadistica
             };
         } catch (PDOException $th) {
             throw $th;
+        }
+    }
+
+    function calcularPorcentaje($valorActual, $valorTotal)
+    {
+        if ($valorTotal != 0) {
+            $porcentaje = ($valorActual / $valorTotal) * 100;
+            return number_format($porcentaje, 2) . '%';
+        } else {
+            // Manejar el caso en el que $valorTotal sea igual a cero para evitar la división por cero
+            return 0;
         }
     }
 }

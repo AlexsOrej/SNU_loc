@@ -19,7 +19,6 @@
                         <th>EVENTOS</th>
                         <th>PQRS</th>
                         <th>RIESGOS</th>
-
                     </tr>
                 </thead>
                 <tbody>

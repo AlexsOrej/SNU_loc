@@ -25,20 +25,22 @@
                         <tr>
                             <td><?php echo $value->oferta ?></td>
                             <td>
-                                <?php print_r($this->estadisticas->TodosUsuariosPorModulo($value->oferta, $inicio, $fin, $cliente)); ?>
+                                <?php echo $valorActual =$this->estadisticas->TodosUsuariosPorModulo($value->oferta, $inicio, $fin, $cliente); ?>
                             </td>
                             <td>
-                                <?php print_r($this->estadisticas->UsuariosActivadosPorModulo($value->oferta, $cliente)); ?>
+                                <?php echo $this->estadisticas->UsuariosActivadosPorModulo($value->oferta, $cliente); ?>
                             </td>
                             <td>
                                 <?php
-                                $UsoUsuario = $this->estadisticas->UsoUsuario($value->oferta, $cliente, $inicio, $fin);
+                                echo $this->estadisticas->calcularPorcentaje($valorActual, $_SESSION['totalaccesomodulos']);
+                                
+                                 $UsoUsuario = $this->estadisticas->UsoUsuario($value->oferta, $cliente, $inicio, $fin);
                                 // print_r($UsoUsuario);
                                 ?>
                             </td>
                             <td>
                                 <?php
-                                echo isset($UsoUsuario->usuario) ? $UsoUsuario->usuario : '0';
+                                echo isset($UsoUsuario->usuarios) ? $UsoUsuario->usuarios : '0';
                                 ?>
                             </td>
                             <td>

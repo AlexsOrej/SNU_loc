@@ -19,6 +19,7 @@
                             <td><?= $UsoByRols->rol ?></td>
                             <td><?=$this->estadisticas->UsoByRolActivos($UsoByRols->rol,$cliente, $inicio, $fin) ?></td>
                             <td><?= $UsoByRols->sessionesByrol ?></td>
+                            <td><?= $this->estadisticas->calcularPorcentaje($UsoByRols->sessionesByrol,$_SESSION['totaliniciosession']  ) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

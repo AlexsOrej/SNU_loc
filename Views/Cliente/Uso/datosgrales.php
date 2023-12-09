@@ -1,4 +1,4 @@
-<div class="card">    
+<div class="card">
     <div class="header">
         <h2>DATOS GENERALES</h2>
     </div>
@@ -15,20 +15,23 @@
                         <th>Fecha del Ultimo inicio</th>
                         <th>USUARIO QUE MAS INICIO SESION</th>
                         <th>ROL Del USUARIO QUE MAS INICIO SESION</th>
-                        <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?php print_r($totaliniciosession) ?></td>
-                        <td><?php print_r($totalaccesomodulos) ?></td>
-                        <td><?php print_r($usuariosactivos) ?></td>
-                        <td><?php print_r($usuariosconactividad) ?></td>
-                        <td><?php print_r($modulosactivos) ?></td>
-                        <td><?php print_r($ultimoiniciosession) ?></td>
-                        <td><?php print_r($usuarioconmasactividad->usuario) ?></td>
-                        <td><?php print_r($usuarioconmasactividad->rol) ?></td>
+                        <td>
+                            <?php
+                            $_SESSION['totaliniciosession'] = $totaliniciosession;
+                            echo $totaliniciosession ?></td>
+                        <td><?php
+                            $_SESSION['totalaccesomodulos'] = $totalaccesomodulos;
+                            echo $totalaccesomodulos ?></td>
+                        <td><?php echo $usuariosactivos ?></td>
+                        <td><?php echo $usuariosconactividad ?></td>
+                        <td><?php echo $modulosactivos ?></td>
+                        <td><?php echo $ultimoiniciosession ?></td>
+                        <td><?php echo $usuarioconmasactividad->usuario ?></td>
+                        <td><?php echo $usuarioconmasactividad->rol ?></td>
                     </tr>
                 </tbody>
             </table>
