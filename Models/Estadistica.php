@@ -552,7 +552,7 @@ class Estadistica
     {
         // Obtener las partes de la URL
         $urlParseada = parse_url($url);
-// print_r($urlParseada);
+        // print_r($urlParseada);
         // Inicializar un array para almacenar los parámetros
         $parametros = array();
 
@@ -560,8 +560,7 @@ class Estadistica
         if (isset($urlParseada['query'])) {
             // Parsear la cadena de consulta y obtener los pares clave-valor
             parse_str($urlParseada['query'], $parametros);
-            
-        }else{
+        } else {
             parse_str($urlParseada['path'], $parametros);
         }
 
@@ -570,8 +569,9 @@ class Estadistica
 
 
     public function MigrarData($cliente)
-    {            $squema = $this->Squema($cliente);
-            
+    {
+        $squema = $this->Squema($cliente);
+
 
         try {
             // Consulta para seleccionar datos de la tabla de origen
@@ -583,14 +583,14 @@ class Estadistica
                 // Iterar sobre los resultados y realizar la inserción en la tabla de destino
                 while ($row = $stmtSelect->fetch(PDO::FETCH_ASSOC)) {
 
-                    $url_param=  $this->obtenerParametrosDeURL($row['url']);
+                    $url_param =  $this->obtenerParametrosDeURL($row['url']);
                     // echo'<pre>';
                     // print_r($url_param);
                     // echo'</pre>';
                     // print_r($url_param['a']);
                     $columna1 = $row['ip'];
-                    $columna2 =  isset($url_param['c'])?$url_param['c']:'0';
-                    $columna3 = isset($url_param['a'])?$url_param['a']:'0';
+                    $columna2 =  isset($url_param['c']) ? $url_param['c'] : '0';
+                    $columna3 = isset($url_param['a']) ? $url_param['a'] : '0';
                     $columna4 = $row['navegador'];
                     $columna5 = $row['usuario'];
                     $columna6 = $row['fecha_hora'];
@@ -653,20 +653,17 @@ class Estadistica
         try {
             $squema = $this->Squema($cliente);
             $sql = "SELECT COUNT(e.id) as total 
-            FROM $squema.estadisticas e
-            INNER JOIN normalizacion_snu.controllers c 
-                ON e.url LIKE CONCAT('%c=', c.controller, '%')
-                         JOIN normalizacion_snu.ofertas ofer 
-                ON c.modulo_id= ofer.id                
-                WHERE   e.url LIKE '%c=%'
-                AND   ofer.oferta=:modulo
-                AND fecha_hora BETWEEN :inicio AND :fin";
+                    FROM $squema.estadisticasUso e 
+                    INNER JOIN normalizacion_snu.controllers c 
+                            ON e.controlador=c.controller 
+                    JOIN normalizacion_snu.ofertas ofer 
+                            ON c.modulo_id= ofer.id 
+                    WHERE ofer.oferta= :modulo 
+                    AND fecha_hora BETWEEN :inicio AND :fin";
             // Modificamos el parámetro :modulo para incluir los caracteres % en el valor
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':inicio', $inicio);
             $stmt->bindParam(':fin', $fin);
-            // Agregamos los caracteres % a :modulo antes de vincularlo
-            // $moduloLike = '%' . $modulo . '%';
             $stmt->bindParam(':modulo', $modulo);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_OBJ);
@@ -708,7 +705,6 @@ class Estadistica
             return false;
         }
     }
-
 
     function UsoUsuario($modulo, $cliente, $inicio, $fin)
     {

@@ -14,17 +14,18 @@ class frecuenciaEjecucionController
 
     public function index()
     {
+        $frecuencia = $this->model->consultar();
         require_once 'Views/Layout/riesgos.php';
-        require_once 'Views/Controles/index.php';
+        require_once 'Views/FrecuenciaEjecucion/index.php';
         require_once 'Views/Layout/foot.php';
     }
 
     public function add(){
-      $nivel = new frecuenciaEjecucion();
+      $frec = new frecuenciaEjecucion();
       if(isset($_REQUEST['id'])){
-          $nivel = $this->model->consultarPorId($_REQUEST['id']);
+          $frec = $this->model->consultarPorId($_REQUEST['id']);
       }
-      require_once 'Views/NivelRiesgos/crud.php';
+      require_once 'Views/FrecuenciaEjecucion/crud.php';
   }
 
   public function crud(){

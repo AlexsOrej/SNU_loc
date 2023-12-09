@@ -7,6 +7,7 @@ require_once 'Models/Probabilidad.php';
 require_once 'Models/Clasificacionriesgos.php';
 require_once 'Models/Proceso.php';
 require_once 'Models/Nivelriesgos.php';
+require_once 'Models/Controles.php';
 
 
 
@@ -25,6 +26,8 @@ class RiesgosController
         $this->clasificacion = new Clasificacionriesgos();
         $this->procesos = new Proceso();
         $this->nivelRiesgos = new Nivelriesgos();
+        $this->controles = new Controles();
+
 
 
 
@@ -35,7 +38,7 @@ class RiesgosController
     {
         $riesgo = $this->model->consultar();
         require_once 'Views/Layout/riesgos.php';
-        require_once 'Views/Riesgos/index.php';
+        require_once 'Views/Riesgos/dashboard.php';
         require_once 'Views/Layout/foot.php';
     }
 
@@ -53,7 +56,7 @@ class RiesgosController
         $datosImpacto = $this->impactos->consultar();
         $datosProbabilidad = $this->probabilidad->consultar();
         $nivelRiesgo = $this->nivelRiesgos->consultar();
-
+        $controles = $this->controles->consultar();
         //Fraccion de codigo para obtener los valores de impacto
         $valoresI = [];
         foreach ($datosImpacto as $objeto) {
@@ -108,15 +111,19 @@ class RiesgosController
         $data->descripcion= $_REQUEST['descripcion'];	
         $data->fecha_registro= date('Y-m-d');	
         $data->usuario_registro= $_REQUEST['usuario'];
+        $data->control_id = isset($_REQUEST['nombreControl']);
 
         $imp = $this->impactos->consultarPorId($_REQUEST['impacto']); // uso el id para conocer el valor
         $prob = $this->probabilidad->consultarPorId($_REQUEST['probabilidad']);
 
         $valorProbabilidad = $prob->valor;
         $valorImpacto = $imp->valor;
-
-        $control = "si"; //SOLO MIENTRAS DEFINO LO DE LOS CONTROLES
-        if($control != "no"){
+        // OJO POR QUE EL VALOR QUE SE LE SUMA A LA PROBABILIDAD DEPENDE DE LA EVALUACION DEL CONTROL
+        $control = $_REQUEST['control']; 
+        if($control == "si"){
+            $nivel_riesgo = $valorProbabilidad * $valorImpacto;
+        }else if($control == "no"){
+            //$nivel_riesgo = ($valorProbabilidad * $valorImpacto) + 2;
             $nivel_riesgo = $valorProbabilidad * $valorImpacto;
         }
         $data->nivel_riesgo= $nivel_riesgo;

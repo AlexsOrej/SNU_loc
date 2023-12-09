@@ -9,26 +9,27 @@ class tipoControlController
     private $rol;
     public function __CONSTRUCT()
     {
-        $this->model = new tipoEjecucion();
+        $this->model = new tipoControl();
     }
 
     public function index()
     {
+        $tipoRiesgo = $this->model->consultar();
         require_once 'Views/Layout/riesgos.php';
-        require_once 'Views/Controles/index.php';
+        require_once 'Views/TipoControl/index.php';
         require_once 'Views/Layout/foot.php';
     }
 
     public function add(){
-      $nivel = new tipoEjecucion();
+      $tipo = new tipoControl();
       if(isset($_REQUEST['id'])){
-          $nivel = $this->model->consultarPorId($_REQUEST['id']);
+          $tipo = $this->model->consultarPorId($_REQUEST['id']);
       }
-      require_once 'Views/NivelRiesgos/crud.php';
+      require_once 'Views/TipoControl/crud.php';
   }
 
   public function crud(){
-      $data = new tipoEjecucion();
+      $data = new tipoControl();
       $data->id = $_REQUEST['id'];
       $data->nombre = $_REQUEST['nombre'];
       $data->descripcion =  $_REQUEST['descripcion'];

@@ -15,27 +15,25 @@ class tipoEjecucionController
 
     public function index()
     {
+        $tipo = $this->model->consultar();
         require_once 'Views/Layout/riesgos.php';
-        require_once 'Views/Controles/index.php';
+        require_once 'Views/TipoEjecucion/index.php';
         require_once 'Views/Layout/foot.php';
     }
     public function add(){
-      $nivel = new NivelRiesgos();
+      $tipo = new tipoEjecucion();
       if(isset($_REQUEST['id'])){
-          $nivel = $this->model->consultarPorId($_REQUEST['id']);
+          $tipo = $this->model->consultarPorId($_REQUEST['id']);
       }
-      require_once 'Views/NivelRiesgos/crud.php';
+      require_once 'Views/TipoEjecucion/crud.php';
   }
 
   public function crud(){
-      $data = new NivelRiesgos();
+      $data = new tipoEjecucion();
       $data->id = $_REQUEST['id'];
       $data->nombre = $_REQUEST['nombre'];
       $data->descripcion =  $_REQUEST['descripcion'];
-      $data->rango =  $_REQUEST['rango1'];
-      $data->rango2 =  $_REQUEST['rango2'];
-      $data->color =  $_REQUEST['color'];
-
+     
 
 
       if( $data->id > 0)

@@ -1,6 +1,9 @@
 <?php
 require_once 'Models/Sessioncheck.php';
 require_once 'Models/Respuesta.php';
+require_once 'Models/Criterioscontrol.php';
+
+
 
 class RespuestasController
 {
@@ -10,6 +13,15 @@ class RespuestasController
     public function __CONSTRUCT()
     {
         $this->model = new Respuesta();
+        $this->criterio = new CriteriosControl();
+    }
+
+    public function respuestas(){
+        $id = $_REQUEST['id'];
+        $criterio = $this->criterio->consultarPorId($id);
+        require_once 'Views/Layout/riesgos.php';
+        require_once 'Views/CriteriosControl/respuestas.php';
+        require_once 'Views/Layout/foot.php';
     }
 
     public function Index()
