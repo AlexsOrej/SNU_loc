@@ -1,10 +1,10 @@
 <?php
-class Seccion
+class Secciones
 {
 
     private $pdo;
     public $id;
-    public $idNorma;
+    public $idnorma;
     public $numero;
     public $titulo;
     public $descripcion;
@@ -13,56 +13,107 @@ class Seccion
     {
         try {
             $this->pdo = Database::StartUp();
+            $this->verificarCrearTabla();
         } catch (Exception $e) {
             die($e->getMessage());
         }
     }
+    private function verificarCrearTabla()
+    {
+        $tableName = 'secciones';
 
-    public function Index()
+        $sql = "SHOW TABLES LIKE :tableName";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':tableName', $tableName);
+        $stmt->execute();
+        $tableExists = $stmt->rowCount() > 0;
+        if (!$tableExists) {
+            // La tabla no existe, crea la tabla
+            $this->crearTabla();
+        }
+    }
+
+    private function crearTabla()
+    {
+        $sql = "CREATE TABLE secciones (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            idnorma INT NOT NULL,
+            numero INT NOT NULL,
+            titulo VARCHAR(255) NOT NULL,
+            descripcion TEXT,
+            FOREIGN KEY (idnorma) REFERENCES normas(id)
+        )";
+
+        $this->pdo->exec($sql);
+    }
+
+    
+    public function Index($id)
     {
         try {
-            $sql = 'SELECT * FROM secciones';
+            $sql = 'SELECT * FROM secciones WHERE idNorma=:id';
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_OBJ);
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
-            return false;
+            throw $e;
         }
     }
-    public function Crear(Seccion $data)
+
+    public function Registrar($normaid, $nuevosNumeros, $nuevosTitulos)
     {
-        $sql = "INSERT INTO secciones (idNorma, numero, titulo, descripcion)
-                       VALUES (:idNorma, :numero, :titulo, :descripcion)";
+        $sql = "INSERT INTO secciones (idNorma, numero, titulo) VALUES (:idnorma, :numero, :titulo)";
 
+        // Preparar la consulta una vez fuera del bucle
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':idNorma', $idNorma);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':titulo', $titulo);
-        $stmt->bindParam(':descripcion', $descripcion);
 
-        return $stmt->execute();
+        // Verificar si los arrays tienen la misma longitud
+        if (count($nuevosNumeros) === count($nuevosTitulos)) {
+            // Ejecutar la consulta con cada conjunto de datos
+            for ($i = 0; $i < count($nuevosNumeros); $i++) {
+                // Verificar si el número es numérico antes de ejecutar la consulta
+                if (is_numeric($nuevosNumeros[$i])) {
+                    // Asignar valores a los parámetros
+                    $stmt->bindParam(':idnorma', $normaid);
+                    $stmt->bindParam(':numero', $nuevosNumeros[$i]);
+                    $stmt->bindParam(':titulo', $nuevosTitulos[$i]);                    
+
+                    // Ejecutar la consulta
+                    $stmt->execute();
+                } else {
+                    // Ignorar el conjunto de datos si el número no es numérico
+                    continue;
+                }
+            }
+        } else {
+            // Manejar el caso cuando los arrays no tienen la misma longitud
+            echo json_encode(['error' => 'Los arrays no tienen la misma longitud']);
+            exit();
+        }
     }
+
+
+
 
     public function Obtener($idSeccion)
     {
-        $sql = "SELECT * FROM secciones WHERE id = :idSeccion";
+        $sql = "SELECT * FROM secciones WHERE id = :id";
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $idSeccion);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public function Actualizar(Seccion $data)
+    public function Actualizar(Secciones $data)
     {
         $sql = "UPDATE secciones
-                SET numero = :numero, titulo = :titulo, descripcion = :descripcion
+                SET numero = :numero, titulo = :titulo
                 WHERE id = :idSeccion";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id', $idSeccion);
-        $stmt->bindParam(':numero', $numero);
-        $stmt->bindParam(':titulo', $titulo);
-        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':id', $data->id);
+        $stmt->bindParam(':numero', $data->numero);
+        $stmt->bindParam(':titulo', $data->titulo);        
         return $stmt->execute();
     }
 

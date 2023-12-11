@@ -6,6 +6,7 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
   // }
+  
   //mostrar errores
   //autocargar de modelos
   /**TODO IMPLEMETAR LA AUTO CARGA DE MODELOS*/
