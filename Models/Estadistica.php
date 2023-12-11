@@ -9,6 +9,8 @@ class Estadistica
     public $id;
     public $ip;
     public $url;
+    public $controlador;
+    public $accion;
     public $navegador;
     public $usuario;
     public $fecha_hora;
@@ -38,6 +40,28 @@ class Estadistica
         echo date("Y-m-d h:i:sa");*/
     }
 
+    public function TblEstaditicasUso()
+    {
+        $tabla = "estadisticasUso";
+        // Comprueba si la tabla existe
+        $sqlCheckTable = "SHOW TABLES LIKE '$tabla'";
+        $stmtCheckTable = $this->pdo01->prepare($sqlCheckTable);
+        $stmtCheckTable->execute();
+        $tableExists = $stmtCheckTable->rowCount() > 0;
+        // Si la tabla no existe, créala
+        if (!$tableExists) {
+            $sqlCreateTable = "CREATE TABLE $tabla (
+                                    id INT AUTO_INCREMENT PRIMARY KEY,
+                                    ip VARCHAR(255),
+                                    controlador VARCHAR(255),
+                                    accion VARCHAR(255),
+                                    navegador VARCHAR(255),
+                                    usuario VARCHAR(255),
+                                    fecha_hora DATETIME
+                                )";
+            $this->pdo->exec($sqlCreateTable);
+        }
+    }
     public function getUserIpAddress()
     {
         if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
@@ -57,11 +81,13 @@ class Estadistica
     public function Add(Estadistica $data)
     {
         try {
-            $stm = "INSERT INTO estadisticas(ip,url, navegador, usuario, fecha_hora )
-            VALUES(?,?, ?, ?, ?)";
+
+            $stm = "INSERT INTO estadisticasUso(ip, controlador, accion, navegador, usuario, fecha_hora )
+            VALUES(?,?, ?, ?, ?, ?)";
             $this->pdo->prepare($stm)->execute(array(
                 $data->ip,
-                $data->url,
+                $data->controlador,
+                $data->accion,
                 $data->navegador,
                 $data->usuario,
                 $data->fecha_hora
@@ -74,7 +100,7 @@ class Estadistica
     {
         try {
             $user = $_SESSION['user']->FullName;
-            $stm = $this->pdo->prepare("SELECT  MAX(fecha_hora) AS ULTIMA, estadisticas.* FROM  estadisticas WHERE usuario= '$user'");
+            $stm = $this->pdo01->prepare("SELECT  MAX(fecha_hora) AS ULTIMA, estadisticasUso.* FROM  estadisticasUso WHERE usuario= '$user'");
             $stm->execute();
             return $stm->fetch(PDO::FETCH_OBJ);
         } catch (Exception $e) {
@@ -84,7 +110,7 @@ class Estadistica
     public function Index()
     {
         try {
-            $stm = $this->pdo->prepare("SELECT * FROM  estadisticas WHERE usuario not in ('alexsander Orejuela','DIANA GARZON')  ORDER BY fecha_hora asc");
+            $stm = $this->pdo->prepare("SELECT * FROM  estadisticasUso WHERE usuario not in (1)  ORDER BY fecha_hora asc");
             $stm->execute();
             return $stm->fetchAll(PDO::FETCH_OBJ);
         } catch (Exception $e) {
@@ -94,10 +120,10 @@ class Estadistica
     function IngresosPorUsuario()
     {
         $sql = "SELECT e.usuario, COUNT(*) AS cantidad, cl.nombre, cl.id as cliente_id
-    FROM estadisticas e
+    FROM estadisticasUso e
     JOIN usuarios u ON e.usuario = CONCAT(u.nombres, ' ', u.apellidos)
     JOIN clientes cl ON u.cliente_id = cl.id
-    WHERE e.url = 'c=clientes&a=verificar' 
+    WHERE e.accion = 'verificar' 
     /* AND e.fecha_hora BETWEEN :start_date AND :end_date */
     GROUP BY e.usuario
     ORDER BY cantidad DESC, nombre DESC";
@@ -113,10 +139,10 @@ class Estadistica
     function IngresosPorUsuarioFecha($start_date, $end_date)
     {
         $sql = "SELECT e.usuario, COUNT(*) AS cantidad, cl.nombre, cl.id as cliente_id
-    FROM estadisticas e
+    FROM estadisticasUso e
     JOIN usuarios u ON e.usuario = CONCAT(u.nombres, ' ', u.apellidos)
     JOIN clientes cl ON u.cliente_id = cl.id
-    WHERE e.url = 'c=clientes&a=verificar' 
+    WHERE e.accion = 'verificar' 
      AND e.fecha_hora BETWEEN :start_date AND :end_date 
     GROUP BY e.usuario
     ORDER BY cantidad DESC, nombre DESC";
@@ -140,10 +166,10 @@ class Estadistica
             $fechaInicio = date('Y-m-d', strtotime("-$dias days", strtotime($hoy)));
 
             $sql = "SELECT e.usuario, COUNT(*) AS cantidad, cl.nombre
-            FROM estadisticas e
+            FROM estadisticasUso e
             JOIN usuarios u ON e.usuario = CONCAT(u.nombres, ' ', u.apellidos)
             JOIN clientes cl ON u.cliente_id = cl.id
-            WHERE e.url = 'c=clientes&a=verificar' 
+            WHERE e.accion = 'verificar' 
             AND e.fecha_hora >= :fecha_inicio
             GROUP BY e.usuario
             ORDER BY cantidad DESC, nombre DESC
@@ -162,7 +188,7 @@ class Estadistica
     {
         try {
 
-            $sql = "SELECT (SELECT COUNT(id) FROM normalizacion_snu.estadisticas) AS cantidad, MIN(fecha_hora) AS desde, MAX(fecha_hora) AS hasta FROM estadisticas WHERE url !='https://calidadsnu.com/snu/?c=clientes&a=index'";
+            $sql = "SELECT (SELECT COUNT(id) FROM estadisticasUso) AS cantidad, MIN(fecha_hora) AS desde, MAX(fecha_hora) AS hasta FROM estadisticasUso WHERE accion !=''";
             $smt = $this->pdo01->prepare($sql);
             $smt->bindParam(':fecha_inicio', $fechaInicio, PDO::PARAM_STR);
             $smt->execute();
@@ -175,13 +201,13 @@ class Estadistica
     function IngresosUltimosSieteDias()
     {
         $sql = "SELECT 
-                (SELECT COUNT(id) FROM estadisticas WHERE fecha_hora >= NOW() - INTERVAL 7 DAY) AS cantidad,
+                (SELECT COUNT(id) FROM estadisticasUso WHERE fecha_hora >= NOW() - INTERVAL 7 DAY) AS cantidad,
                 NOW() - INTERVAL 7 DAY AS desde,
                 MAX(fecha_hora) AS hasta 
             FROM 
-                estadisticas 
+            estadisticasUso 
             WHERE 
-                url != 'https://calidadsnu.com/snu/?c=clientes&a=index'
+                accion != ''
                 AND fecha_hora >= NOW() - INTERVAL 7 DAY";
         $smt = $this->pdo01->prepare($sql);
         $smt->execute();
@@ -193,9 +219,9 @@ class Estadistica
         $sql = "SELECT 
                 COUNT(id) AS cantidad 
             FROM 
-                estadisticas 
+            estadisticasUso 
             WHERE 
-                url != 'https://calidadsnu.com/snu/?c=clientes&a=index'
+                accion != ''
                 AND DATE(fecha_hora) = CURDATE()";
         $smt = $this->pdo01->prepare($sql);
         $smt->execute();
@@ -397,7 +423,7 @@ class Estadistica
         try {
             $sql = "SELECT MAX(fecha_hora) as ultima 
             FROM estadisticas e 
-            JOIN usuarios u ON e.usuario = CONCAT(u.nombres,' ',u.apellidos) 
+            JOIN usuarios u ON e.usuario = u.id 
             AND u.cliente_id=:id
             AND e.fecha_hora BETWEEN :inicio AND :fin";
             $stmt = $this->pdo->prepare($sql);

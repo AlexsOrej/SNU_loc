@@ -20,6 +20,9 @@ if (isset($_REQUEST['clientes'], $_REQUEST['startDate'], $_REQUEST['endDate'])) 
                 type: "POST",
                 url: "?c=clientes&a=DatosGrales",
                 data: { cliente: cliente, inicio: inicio, fin: fin },
+                beforeSend: function() {
+                        $('#datosgrales').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
+                    },
                 success: function(response) {                    
                     if (response) {                        
                         $("#datosgrales").html(response);
@@ -43,6 +46,9 @@ if (isset($_REQUEST['clientes'], $_REQUEST['startDate'], $_REQUEST['endDate'])) 
                 type: "POST",
                 url: "?c=clientes&a=usabilidadModUsu",
                 data: { cliente: cliente, inicio: inicio, fin: fin },
+                beforeSend: function() {
+                        $('#usabilidadPorModUso').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
+                    },
                 success: function(response) {                    
                     if (response) {                        
                         $("#usabilidadPorModUso").html(response);
@@ -66,6 +72,9 @@ if (isset($_REQUEST['clientes'], $_REQUEST['startDate'], $_REQUEST['endDate'])) 
                 type: "POST",
                 url: "?c=clientes&a=datosPorUsuario",
                 data: { cliente: cliente, inicio: inicio, fin: fin },
+                beforeSend: function() {
+                        $('#datosPorUsuario').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
+                    },
                 success: function(response) {                    
                     if (response) {                        
                         $("#datosPorUsuario").html(response);
@@ -88,6 +97,9 @@ if (isset($_REQUEST['clientes'], $_REQUEST['startDate'], $_REQUEST['endDate'])) 
                 type: "POST",
                 url: "?c=clientes&a=UsoByRol",
                 data: { cliente: cliente, inicio: inicio, fin: fin },
+                beforeSend: function() {
+                        $('#usoPorRol').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
+                    },
                 success: function(response) {                    
                     if (response) {                        
                         $("#usoPorRol").html(response);

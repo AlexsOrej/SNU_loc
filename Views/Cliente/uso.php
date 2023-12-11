@@ -20,10 +20,14 @@
                     </div>
                     <div class="form-group">
                         <div class="form-line">
-                            <label for="servicios">Rango</label>
-                            <input type="text" id="dateRange" name="dateRange" />
-                            <input type="hidden" id="startDate" name="startDate" readonly />
-                            <input type="hidden" id="endDate" name="endDate" readonly />
+                            <label for="servicios">Desde</label>                            
+                            <input type="date" class="form-control" id="startDate" name="startDate" required />                           
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label for="servicios">Hasta</label>                            
+                            <input type="date" class="form-control" id="endDate" name="endDate"  required/>
                         </div>
                     </div>
                     <div class="form-group text-center">
@@ -86,37 +90,37 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $("#dateRange,#dateRange01").ionRangeSlider({
-            type: "double",
-            grid: true,
-            min: fecha_a_valor_numerico("2022-01-01"),
-            max: fecha_a_valor_numerico("2025-12-31"),
-            from: fecha_a_valor_numerico("2022-01-01"),
-            to: fecha_a_valor_numerico("2025-12-31"),
-            prettify: function(num) {
-                return valor_numerico_a_fecha(num);
-            },
-            onStart: function(data) {
-                $("#startDate").val(valor_numerico_a_fecha(data.from));
-                $("#endDate").val(valor_numerico_a_fecha(data.to));
-            },
-            onChange: function(data) {
-                $("#startDate").val(valor_numerico_a_fecha(data.from));
-                $("#endDate").val(valor_numerico_a_fecha(data.to));
-            }
-        });
-    });
+    // $(document).ready(function() {
+    //     $("#dateRange,#dateRange01").ionRangeSlider({
+    //         type: "double",
+    //         grid: true,
+    //         min: fecha_a_valor_numerico("2022-01-01"),
+    //         max: fecha_a_valor_numerico("2025-12-31"),
+    //         from: fecha_a_valor_numerico("2022-01-01"),
+    //         to: fecha_a_valor_numerico("2025-12-31"),
+    //         prettify: function(num) {
+    //             return valor_numerico_a_fecha(num);
+    //         },
+    //         onStart: function(data) {
+    //             $("#startDate").val(valor_numerico_a_fecha(data.from));
+    //             $("#endDate").val(valor_numerico_a_fecha(data.to));
+    //         },
+    //         onChange: function(data) {
+    //             $("#startDate").val(valor_numerico_a_fecha(data.from));
+    //             $("#endDate").val(valor_numerico_a_fecha(data.to));
+    //         }
+    //     });
+    // });
 
-    function fecha_a_valor_numerico(fecha) {
-        // Convierte una fecha en un valor numérico para el slider
-        return new Date(fecha).getTime();
-    }
+    // function fecha_a_valor_numerico(fecha) {
+    //     // Convierte una fecha en un valor numérico para el slider
+    //     return new Date(fecha).getTime();
+    // }
 
-    function valor_numerico_a_fecha(valor) {
-        // Convierte un valor numérico del slider a una fecha
-        return new Date(parseInt(valor)).toISOString().slice(0, 10);
-    }
+    // function valor_numerico_a_fecha(valor) {
+    //     // Convierte un valor numérico del slider a una fecha
+    //     return new Date(parseInt(valor)).toISOString().slice(0, 10);
+    // }
 
     function Servicios() {
 

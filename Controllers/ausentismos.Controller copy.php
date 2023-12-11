@@ -7,11 +7,11 @@ require_once 'Models/Rotativo.php';
 class RotativoController
 {
     private $rol;
+    private $model;
     public function __CONSTRUCT()
     {
         $this->model = new Rotativo();
-        // $model = new Model();
-        // $model->TblAusentismo('ausentismos');
+        
     }
 
 

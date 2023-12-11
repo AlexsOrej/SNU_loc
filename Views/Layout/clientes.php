@@ -180,4 +180,4 @@ header('Content-type: text/html; charset=utf-8');
                 <li class="active"><?= ucwords($_REQUEST['c']) ?></li>
                 <li class="active"><?= ucwords($_REQUEST['a']) ?></li>
             </ol>
-            <?php require_once 'Views/Layout/sessions.php'; ?>
+            <?php require_once 'Views/Layout/sessions.php';?>

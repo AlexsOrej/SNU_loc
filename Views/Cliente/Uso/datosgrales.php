@@ -4,17 +4,17 @@
     </div>
     <div class="body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover dataTable js-exportable">
                 <thead>
-                    <tr>
-                        <th>TOTAL INICIOS DE SESION A SNU</th>
+                    <tr>                        
+                        <th>Total de inicios de sesión</th>
                         <th>Total de accesos a todos los modulos </th>
-                        <th>usuarios activados</th>
-                        <th>usuarios con actividad</th>
-                        <th>modulos activados</th>
+                        <th>Usuarios activados</th>
+                        <th>Usuarios con actividad</th>
+                        <th>Modulos activados</th>
                         <th>Fecha del Ultimo inicio</th>
-                        <th>USUARIO QUE MAS INICIO SESION</th>
-                        <th>ROL Del USUARIO QUE MAS INICIO SESION</th>
+                        <th>Usuario que mas inicio session</th>                        
+                        <th>Rol del usuario</th>
                     </tr>
                 </thead>
                 <tbody>

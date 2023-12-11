@@ -126,7 +126,7 @@ class ClientesController
     {
         unset($_SESSION['datos_cliente']);
         require_once 'Views/Layout/clientes.php';
-        $totalvisitas = $this->estadisticas->TotalVisitas();
+         $totalvisitas = $this->estadisticas->TotalVisitas();
         $totalvisitas7dias = $this->estadisticas->IngresosUltimosSieteDias();
         $totalvisitasdiaActual = $this->estadisticas->IngresosDelDiaActual();
         $ingresosporusuario = $this->estadisticas->IngresosPorUsuario();
@@ -198,6 +198,7 @@ class ClientesController
         $fin = $_REQUEST['fin'];   
         $UsoByRol = $this->estadisticas->UsoByRol($cliente, $inicio, $fin);
         require_once 'Views/Cliente/Uso/usoPorRol.php';
+        require_once 'Views/Layout/filtro.php';
     }
 
 
@@ -214,6 +215,7 @@ class ClientesController
         $ultimoiniciosession = $this->estadisticas->UltimoInicioSession($inicio, $fin, $cliente);
         $usuarioconmasactividad = $this->estadisticas->UsuarioConMasactividad($inicio, $fin, $cliente);
         require_once 'Views/Cliente/Uso/datosgrales.php';
+        // require_once 'Views/Layout/filtro.php';
     }
 
     public function UsabilidadModUsu()
@@ -223,6 +225,7 @@ class ClientesController
         $fin = $_REQUEST['fin'];
         $ModulosEstadistica = $this->estadisticas->ModulosEstadistica($inicio, $fin, $cliente);
         require_once 'Views/Cliente/Uso/usabilidadModUsu.php';
+        // require_once 'Views/Layout/filtro.php';
     }
 
     public function DatosPorUsuario()
@@ -232,6 +235,7 @@ class ClientesController
         $fin = $_REQUEST['fin'];
         $DatosByUsuario = $this->estadisticas->DatosByUsuario($cliente, $inicio, $fin);
         require_once 'Views/Cliente/Uso/datosPorUsuario.php';
+        // require_once 'Views/Layout/filtro.php';
     }
 
 

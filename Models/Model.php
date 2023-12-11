@@ -2302,4 +2302,28 @@ class Model
             echo "Error de PDO: " . $e->getMessage();
         }
     }
+
+    public function TblEstaditicasUso()
+    {
+        $tabla = "estadisticasUso";
+
+        // Comprueba si la tabla existe
+        $sqlCheckTable = "SHOW TABLES LIKE '$tabla'";
+        $stmtCheckTable = $this->pdo->prepare($sqlCheckTable);
+        $stmtCheckTable->execute();
+        $tableExists = $stmtCheckTable->rowCount() > 0;
+        // Si la tabla no existe, créala
+        if (!$tableExists) {
+            $sqlCreateTable = "CREATE TABLE $tabla (
+                                    id INT AUTO_INCREMENT PRIMARY KEY,
+                                    ip VARCHAR(255),
+                                    controlador VARCHAR(255),
+                                    accion VARCHAR(255),
+                                    navegador VARCHAR(255),
+                                    usuario VARCHAR(255),
+                                    fecha_hora DATETIME
+                                )";
+            $this->pdo->exec($sqlCreateTable);
+        }
+    }
 }

@@ -4,7 +4,7 @@
     </div>
     <div class="body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover dataTable js-exportable04">
                 <thead>
                     <tr>
                         <th>TIPO DE USUARIO (ROL)</th>

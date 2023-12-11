@@ -4,18 +4,18 @@
     </div>
     <div class="body">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover dataTable js-exportable02">
                 <thead>
                     <tr>
-                        <th>MODULOS ACTIVOS</th>
-                        <th>#Accesos al modulo DE TODOS LOS USUARIOS </th>
+                        <th>Modulos Activos</th>
+                        <th>#Accesos al modulo de todos los usuarios</th>
                         <th># usuarios activados por modulo (que tenga al menos un permiso del modulo)</th>
-                        <th>% Uso de modulos (#Accesos al modulo DE TODOS LOS USUARIOS / total de accesos a los modulos) </th>
-                        <th>USUARIO QUE MAS USO EL MODULO</th>
-                        <th>TIPO DE USUARIO (ROL) DEL QUE MAS USO EL MODULO</th>
-                        <th>CARGO DEL QUE MAS USO EL MODULO</th>
-                        <th>Ultima vez que uso el modulo EL USUARIO QUE MAS USO EL MODULO</th>
-                        <th>Total de accesos del usuario que mas uso el modulo</th>
+                        <th>% Uso de modulos</th>
+                        <th>Usuario que mas uso modulo</th>
+                        <th>Rol</th>
+                        <th>Cargo</th>
+                        <th>Ultima vez que lo uso</th>
+                        <th>Total de accesos</th>
                         <th>Controlador que mas uso en el modulo y que funcion</th>
                     </tr>
                 </thead>
