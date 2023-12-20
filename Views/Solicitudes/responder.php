@@ -1,4 +1,6 @@
-<?php if (isset($_REQUEST['est'])) : ?>
+<?php 
+//print_r($_SESSION['user']->user_id);
+if (isset($_REQUEST['est'])) : ?>
     <script>
         Swal.fire({
             icon: 'success',

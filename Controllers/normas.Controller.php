@@ -5,9 +5,11 @@ class NormasController
 {
 
     public $norma;
+    public $planauditoria;
     public function __CONSTRUCT()
     {
         $this->norma = new Norma();
+        $this->planauditoria = new Auditoria();
     }
 
 
@@ -46,4 +48,23 @@ class NormasController
     {
         echo  $result =   $this->norma->Eliminar($_REQUEST['norma_id']);
     }
+
+    ///ASIGNACION DE NORMAS PARA AUDITAR//
+
+    public function Numerales()
+    {
+        //todo buscar el plan
+       $planauditoria= $this->planauditoria->ObtenerPrograma($_REQUEST['pid']);
+       $normas=$this->norma->Index();
+       $_SESSION['pid']=$_REQUEST['pid'];
+       $listaRequisitos=$this->planauditoria->ListaRequisitos($_REQUEST['pid']);
+        require_once 'Views/Layout/auditorias.php';
+        require_once 'Views/Auditorias/Planes/verplan.php';
+        require_once 'Views/Layout/foot.php';
+    }
+
+    ///ASIGNACION DE NORMAS PARA AUDITAR//
+
+
+
 }

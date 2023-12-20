@@ -32,7 +32,7 @@
                                         <a onclick="Editar('<?= $requisito->id ?>')" title="Edita los datos de la norma" data-valor="<?= $requisito->id ?>"> <span class="glyphicon glyphicon-edit"></span></a>
                                         <a onclick="Quitar('<?= $requisito->id ?>')" title="Elimina la norma">
                                             <span class="glyphicon glyphicon-trash"></span></a>
-                                        <a href="?c=debes&a=index&id=<?= $requisito->id ?>" title="Gestionar la secciones de la norma"> <span class="glyphicon glyphicon-list"></span></a></a>
+                                        <a href="?c=debes&a=index&requisito=<?= $requisito->id ?>" title="Gestionar la secciones de la norma"> <span class="glyphicon glyphicon-list"></span></a></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

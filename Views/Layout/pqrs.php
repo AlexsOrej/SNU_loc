@@ -78,29 +78,7 @@ $servicios = $servicio->Servicio();
     gtag('js', new Date());
     gtag('config', 'G-2KNSD09LYH');
 </script>
-<body class="theme">
-    <!-- Page Loader  -->
-    <!-- <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Cargando los recursos</p>
-        </div>
-    </div> -->
-    <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
-    <!-- #END# Overlay For Sidebars -->
-
-    <!-- Top Bar -->
+<body class="theme"> 
     <!-- Top Bar -->
     <nav class="navbar">
         <div class="container-fluid">
@@ -147,11 +125,14 @@ $servicios = $servicio->Servicio();
                         </a>
                     </li>                
                     <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
+                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">settings</i>
                             <span>PQRS</span>
                         </a>                         
                         <ul class="ml-menu">
+                            <li>
+                                <a href="?c=pqrsf&a=registrarpqrsf">Reportar</a>
+                            </li>                            
                             <li>
                                 <a href="?c=pqrsf&a=index">Gestionar</a>
                             </li>                            

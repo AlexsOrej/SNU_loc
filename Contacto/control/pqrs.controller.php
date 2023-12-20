@@ -76,7 +76,6 @@ class PqrsController
         $alm->radicado = "Rad-" . $randValue;
         $alm->fecha_registro = date('Y-m-d H:i:s');
         $alm->empresa = $_REQUEST['empresa'];
-
         $this->model->Registrar($alm);
 
         $radicadoValue = base64_encode("Rad-" . $randValue);

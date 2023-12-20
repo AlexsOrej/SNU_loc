@@ -207,38 +207,40 @@ class Pqrsf
 		}
 	}
 
-	public function Registrar(Pqrs $data)
+	public function Registrar(Pqrsf $data)
 	{
-		// print_r($data);
-		// exit();
 		try {
-			$sql = "INSERT INTO pqrs (url, tipo_peticion,nombres,apellidos,identificacion,email,n_contacto,descripcion,fecha_registro,estado,radicado,empresa) 
-		        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-
-			$this->pdo->prepare($sql)
-				->execute(
-
-					array(
-						$data->url,
-						$data->tipo_peticion,
-						$data->nombres,
-						$data->apellidos,
-						$data->identificacion,
-						$data->correo,
-						$data->n_contacto,
-						$data->descripcion,
-						$data->fecha_registro,
-						$data->estado,
-						$data->radicado,
-						$data->empresa
-
-
-					)
-				);
+			$sql = "INSERT INTO pqrs (url, tipo_peticion, nombres, apellidos, identificacion, email, n_contacto, descripcion, fecha_registro, estado, radicado, empresa) 
+					VALUES (:url, :tipo_peticion, :nombres, :apellidos, :identificacion, :correo, :n_contacto, :descripcion, :fecha_registro, :estado, :radicado, :empresa)";
+			
+			$stmt = $this->pdo->prepare($sql);
+	
+			$stmt->bindParam(':url', $data->url);
+			$stmt->bindParam(':tipo_peticion', $data->tipo_peticion);
+			$stmt->bindParam(':nombres', $data->nombres);
+			$stmt->bindParam(':apellidos', $data->apellidos);
+			$stmt->bindParam(':identificacion', $data->identificacion);
+			$stmt->bindParam(':correo', $data->correo);
+			$stmt->bindParam(':n_contacto', $data->n_contacto);
+			$stmt->bindParam(':descripcion', $data->descripcion);
+			$stmt->bindParam(':fecha_registro', $data->fecha_registro);
+			$stmt->bindParam(':estado', $data->estado);
+			$stmt->bindParam(':radicado', $data->radicado);
+			$stmt->bindParam(':empresa', $data->empresa);
+	
+			$stmt->execute();
+	
+			// Verifica si se hizo la inserción con éxito
+			if ($stmt->rowCount() > 0) {
+				return true; // Inserción exitosa
+			} else {
+				return false; // Fallo en la inserción
+			}
 		} catch (Exception $e) {
 			die($e->getMessage());
 		}
 	}
+	
 
 
 	public function Max()
@@ -445,7 +447,7 @@ class Pqrsf
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindValue(':usuario', '%' . $usuario . '%');  // Agregamos % al principio y al final
 		$stmt->execute();
-		$result=$stmt->fetch(PDO::FETCH_OBJ);
+		$result = $stmt->fetch(PDO::FETCH_OBJ);
 		return $result->total;
 	}
 
@@ -455,7 +457,7 @@ class Pqrsf
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->bindValue(':usuario', '%' . $usuario . '%');  // Agregamos % al principio y al final
 		$stmt->execute();
-		$result=$stmt->fetchAll(PDO::FETCH_OBJ);
+		$result = $stmt->fetchAll(PDO::FETCH_OBJ);
 		return $result;
 	}
 }

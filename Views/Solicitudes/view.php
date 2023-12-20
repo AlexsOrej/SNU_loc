@@ -55,18 +55,18 @@
                         <?php echo $solicitudes->TipoDocumento; ?>
                         &nbsp;
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label>Ejecucion Cambio</label> <br>
                         <?php echo $solicitudes->EjecucionCambio; ?>
                         &nbsp;
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <label>Aprobado</label> <br>
                         <?php echo $solicitudes->Aprobado; ?>
                         &nbsp;
 
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
 
                         <label>Descripción</label> <br>
 
@@ -74,10 +74,40 @@
                         &nbsp;
 
                     </div>
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <label>Observaciones</label><br>
                         <?php echo $solicitudes->Observaciones; ?>&nbsp;
-
+                    </div>
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Tramite</th>
+                                    <th>Colaborador</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($historial as $value) : ?>
+                                    <tr>
+                                        <td><?php
+                                            if ($value->tipo == 're') {
+                                                echo 'Revisado';
+                                            } elseif ($value->tipo == 'si') {
+                                                echo 'Aprobado';
+                                            } elseif ($value->tipo == 'no') {
+                                                echo 'Rechazado';
+                                            } else {
+                                                echo 'En espera';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td><?php echo $value->usuario ?></td>
+                                        <td><?php echo $value->fecha ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>

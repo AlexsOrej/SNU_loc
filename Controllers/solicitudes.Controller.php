@@ -38,12 +38,14 @@ class SolicitudesController
     $this->model = new Solicitud();
     $this->correo = new Notificacion();
     $this->usuario = new Usuario();
-    $this->proceso = new Proceso();
+    $this->proceso = new Proceso(); 
     $model = new Model();
     $model->ModelSolicitud();
     $model = new Model();
     $model->CreateTable('doc_online');
     $model->ModelDocOnline('doc_online');
+    $model->TblHistorialSolicitudes();
+    
   }
 
   public function Index()
@@ -475,6 +477,7 @@ class SolicitudesController
   public function View()
   {
     $solicitudes =  $this->model->GetSolicitud($_REQUEST['id']);
+    $historial =  $this->model->GetHistorial($_REQUEST['id']);
     require_once 'Views/Solicitudes/view.php';
   }
 
@@ -547,7 +550,7 @@ class SolicitudesController
     // print_r($_SESSION['user']->user_id);
     // echo '</pre>';
 
-    if ($asignados && in_array($_SESSION['user']->user_id, $colaboradorIds)) {
+    if ($asignados && in_array($_SESSION['user']->user_id, $colaboradorIds) or ($_SESSION['user']->rol_id==1)) {
       /*creaciones*/
       if ($sol == "creacion" & $TipoDocumento == "documento") {
         $documentos = $documento->getDocumentos($solicitud->Proceso);
@@ -637,6 +640,7 @@ class SolicitudesController
     $solictud->VersionCambiar = $_REQUEST['Version'];
     $solictud->Observaciones = $_REQUEST['Observaciones'];
     $solictud->Aprobado = $_REQUEST['Aprobado']; //estado
+    $solictud->usuario_id = $_SESSION['user']->user_id; 
     $disponibilidad = "";
     $this->model->ActualizaGestion($solictud);
     $estado = '';
@@ -650,16 +654,19 @@ class SolicitudesController
       $documento->filename != 'online' ? $documento->SubirDoc() : '';
       $disponibilidad = $solictud->EjecucionCambio;
       $estado = '["respuesta"]';
+      $this->model->HistorialSolicitud($solictud);
     }
 
 
     if ($solictud->Aprobado == 're') {
       $disponibilidad = 'La solicitud esta en revisión';
       $estado = '["revision"]';
+      $this->model->HistorialSolicitud($solictud);
     }
 
     if ($solictud->Aprobado == 'no') {
       $disponibilidad = 'La solicitud fue denegada';
+      $this->model->HistorialSolicitud($solictud);
     }
 
     //NOTIFICACION
@@ -822,6 +829,7 @@ class SolicitudesController
       if ($documento->id > 0) {
         $documento->Actualizacion = $_REQUEST['Actualizacion'];
         $documentos = $documento->Actualizar($documento);
+        $this->model->HistorialSolicitud($solictud);
       } else {
         $documentos = $documento->Registrar($documento);
       }
@@ -833,10 +841,12 @@ class SolicitudesController
     if ($solictud->Aprobado == 're') {
       $disponibilidad = 'La solicitud esta en revisión';
       $estado = '["revision"]';
+      $this->model->HistorialSolicitud($solictud);
     }
 
     if ($solictud->Aprobado == 'no') {
       $disponibilidad = 'La solicitud fue denegada';
+      $this->model->HistorialSolicitud($solictud);
     }
     //NOTIFICACION
     $remitente = new Notificacion();
@@ -987,6 +997,7 @@ class SolicitudesController
         $documento->Actualizacion = $solictud->TipoSolicitud;
         $documentos = $documento->Actualizar($documento);
         $documentos = $documento->SubirDoc();
+        $this->model->HistorialSolicitud($solictud);
       } else {
         $documentos = $documento->Registrar($documento);
         $documentos = $documento->SubirDoc();
@@ -994,15 +1005,18 @@ class SolicitudesController
 
       $disponibilidad = $solictud->EjecucionCambio;
       $estado = '["respuesta"]';
+      
     }
 
     if ($solictud->Aprobado == 're') {
       $disponibilidad = 'La solicitud esta en revisión';
       $estado = '["revision"]';
+      $this->model->HistorialSolicitud($solictud);
     }
 
     if ($solictud->Aprobado == 'no') {
       $disponibilidad = 'La solicitud fue denegada';
+      $this->model->HistorialSolicitud($solictud);
     }
 
     //NOTIFICACION

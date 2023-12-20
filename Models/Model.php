@@ -2326,4 +2326,32 @@ class Model
             $this->pdo->exec($sqlCreateTable);
         }
     }
+    public function TblHistorialSolicitudes()
+    {
+        $tabla = "historial_solicitudes";
+    
+        // Comprueba si la tabla existe
+        $sqlCheckTable = "SHOW TABLES LIKE '$tabla'";
+        $stmtCheckTable = $this->pdo->prepare($sqlCheckTable);
+        $stmtCheckTable->execute();
+        $tableExists = $stmtCheckTable->rowCount() > 0;
+    
+        // Si la tabla no existe, créala
+        if (!$tableExists) {
+            $sqlCreateTable = "CREATE TABLE $tabla (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                solicitud_id INT(11) NOT NULL,
+                tipo VARCHAR(11) NOT NULL, -- Cambia esto según el tipo correcto que debería tener
+                usuario_id INT(11) NOT NULL,
+                fecha timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+                FOREIGN KEY (solicitud_id) REFERENCES solicitudes(id), -- Ajusta esto según tu esquema
+                -- Añade más claves foráneas según sea necesario
+                INDEX fk_solicitud (solicitud_id),
+                INDEX fk_usuario (usuario_id)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci";
+    
+            $this->pdo->exec($sqlCreateTable);
+        }
+    }
+    
 }

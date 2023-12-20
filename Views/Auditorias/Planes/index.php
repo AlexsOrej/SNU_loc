@@ -5,6 +5,30 @@
                 <h2 class="title">Programa Auditoria</h2>
             </div>
             <div class="col-xs-12 col-sm-6 align-right">
+
+            </div>
+        </div>
+    </div>
+    <div class="body">
+        
+            <?
+          echo 'Alcance:  '. $planes[0]->alcances.'<br>';
+          echo 'criterios:  '. $planes[0]->criterios.'<br>';
+          echo 'riesgos:  '. $planes[0]->riesgos.'<br>';
+          echo 'metodo:  '. $planes[0]->metodo;
+          echo 'observaciones:  '. $planes[0]->observaciones.'<br>';
+
+            ?>
+    </div>
+</div>
+
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-6">
+                <h2 class="title">Programa Auditoria</h2>
+            </div>
+            <div class="col-xs-12 col-sm-6 align-right">
                 <button class="neu" id="registrar" data-toggle="modal" href='#modal-id'>Registrar Programa</button>
             </div>
         </div>
@@ -15,44 +39,49 @@
                 <thead>
                     <tr>
                         <th>Codigo</th>
-                        <th>Fecha Realización</th>
-                        <th>Menu del Plan</th>
-                        <th>Inicio</th>
-                        <th>Fin</th>
-                        <th>Planeación</th>
-                        <th>Ejecución</th>
+                        <th>Proceso</th>
+                        <th>Horario</th>
+                        <th>Auditores</th>
+                        <th>Experto Tecnico</th>
+                        <th>Menu</th>
                     </tr>
                     <thead>
                     <tbody>
-                        <? foreach ($programa as $programas) : ?>
+                        <? foreach ($planes as $plan) : ?>
                             <tr>
-                                <td>PAU0<?= $programas->id ?></td>
-                                <td><?= $programas->alcances ?></td>
-                                <td><?= $programas->metodo ?></td>
-                                <td><?= $programas->fecha_inicio ?></td>
-                                <td><?= $programas->fecha_fin ?></td>
+                                <td>PLAU0<?= $plan->id ?></td>
+                                <td><?= $plan->proceso ?><br><?= $plan->liderproceso ?></td>
+                                <td><?= $plan->fecha ?><br><?= $plan->horainicio ?><br><?= $plan->horafin ?></td>
                                 <td>
-                                    <a type="button" class="" onclick="PlanAuditoria('<?= $programas->id ?>')" title="CREAR LOS PLANES DE AUDITORIA POR PROCESO" data-toggle="modal" href='#modal-id'>
+                                    <?= $plan->auditorLider ?><br>
+                                    <?= $plan->auditorapoyo ?>
+                                </td>
+                                <td><?= $plan->expertotecnico ?>
+                                </td>
+                                <td>
+                                    <a type="button" class="" onclick="PlanAuditoria('<?= $plan->id ?>')" title="CREAR LOS PLANES DE AUDITORIA POR PROCESO" data-toggle="modal" href='#modal-id'>
                                         <span class="glyphicon glyphicon-tag"></span>
                                     </a>
-                                    <a type="button" class="" onclick="ver('<?= $programas->id ?>')" title="EDITAR EL PROGRAMA DE AUDITORIA">
+                                    <a type="button" class="" onclick="ver('<?= $plan->id ?>')" title="EDITAR EL PROGRAMA DE AUDITORIA">
                                         <span class="glyphicon glyphicon-edit"></span>
                                     </a>
-                                    <a href="?c=auditorias&a=verplanesauditoria&programa_id=<?= $programas->id ?>" type="" class="" title="VER EL PROGRAMA DE AUDITORIA">
+                                    <a href="" type="" class="" title="VER EL PROGRAMA DE AUDITORIA">
                                         <span class="glyphicon glyphicon-eye-open"></span>
                                     </a>
-                                    <a type="button" class="" onclick="ver('<?= $programas->id ?>')" title="ELIMINAR EL PROGRAMA DE AUDITORIA">
+                                    <a type="button" class="" onclick="ver('<?= $plan->id ?>')" title="ELIMINAR EL PROGRAMA DE AUDITORIA">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </a>
                                 </td>
                             </tr>
-                        <? endforeach; ?>
+                        <? endforeach;
+                       // print_r($planes);
+
+                        ?>
                     </tbody>
             </table>
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="modal-id">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

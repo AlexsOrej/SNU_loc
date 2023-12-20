@@ -100,8 +100,7 @@ print_r($nuevosTitulos);
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $idRequisito);
         $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
     public function actualizar($idRequisito, $numero, $descripcion)
@@ -125,5 +124,25 @@ print_r($nuevosTitulos);
         $stmt->bindParam(':idRequisito', $idRequisito);
 
         return $stmt->execute();
+    }
+
+    /**ASOCIAR  REQUISITOS AL PLAN */
+
+    public function Asociar($idPlan,$idRequisito){
+        $sql="INSERT INTO requisitoplan ( idRequisito, idPlan) values(:idRequisito, :idPlan)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':idRequisito', $idRequisito);
+        $stmt->bindParam(':idPlan', $idPlan);
+        $stmt->execute();
+        return "Requisito asociado con exito";
+    }
+    public function DesAsociar($idPlan,$idRequisito){
+        $sql="DELETE FROM requisitoplan  WHERE  idRequisito=:idRequisito AND idPlan=:idPlan";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':idRequisito', $idRequisito);
+        $stmt->bindParam(':idPlan', $idPlan);
+        $stmt->execute();
+        return "Requisito Desasociado con exito";
+
     }
 }

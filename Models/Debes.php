@@ -1,5 +1,5 @@
 <?php
-class Secciones
+class Debes
 {
 
     private $pdo;
@@ -20,7 +20,7 @@ class Secciones
     }
     private function verificarCrearTabla()
     {
-        $tableName = 'secciones';
+        $tableName = 'debes';
 
         $sql = "SHOW TABLES LIKE :tableName";
         $stmt = $this->pdo->prepare($sql);
@@ -35,22 +35,22 @@ class Secciones
 
     private function crearTabla()
     {
-        $sql = "CREATE TABLE secciones (
+        $sql = "CREATE TABLE debes (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            idnorma INT NOT NULL,
-            numero INT NOT NULL,
-            titulo VARCHAR(255) NOT NULL,
+            idrequisito INT NOT NULL,
+            numeral VARCHAR(50) NOT NULL,            
             descripcion TEXT,
-            FOREIGN KEY (idnorma) REFERENCES normas(id)
+            FOREIGN KEY (idrequisito) REFERENCES requisito(id)
         )";
 
         $this->pdo->exec($sql);
     }
-    
+
+
     public function Index($id)
     {
         try {
-            $sql = 'SELECT * FROM secciones WHERE idNorma=:id';
+            $sql = 'SELECT * FROM requisitos WHERE idNorma=:id';
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
@@ -60,9 +60,9 @@ class Secciones
         }
     }
 
-    public function Registrar($normaid, $nuevosNumeros, $nuevosTitulos)
+    public function Registrar($requisitoid, $nuevosNumeros, $nuevosTitulos)
     {
-        $sql = "INSERT INTO secciones (idNorma, numero, titulo) VALUES (:idnorma, :numero, :titulo)";
+        $sql = "INSERT INTO debes (idrequisito, numeral, descripcion) VALUES (:idrequisito, :numero, :titulo)";
 
         // Preparar la consulta una vez fuera del bucle
         $stmt = $this->pdo->prepare($sql);
@@ -72,11 +72,11 @@ class Secciones
             // Ejecutar la consulta con cada conjunto de datos
             for ($i = 0; $i < count($nuevosNumeros); $i++) {
                 // Verificar si el número es numérico antes de ejecutar la consulta
-                if (is_numeric($nuevosNumeros[$i])) {
+                if (!empty($nuevosNumeros[$i])) {
                     // Asignar valores a los parámetros
-                    $stmt->bindParam(':idnorma', $normaid);
+                    $stmt->bindParam(':idrequisito', $requisitoid);
                     $stmt->bindParam(':numero', $nuevosNumeros[$i]);
-                    $stmt->bindParam(':titulo', $nuevosTitulos[$i]);                    
+                    $stmt->bindParam(':titulo', $nuevosTitulos[$i]);
 
                     // Ejecutar la consulta
                     $stmt->execute();
@@ -92,8 +92,14 @@ class Secciones
         }
     }
 
-
-
+    public function ObtenerPorRequisito($idrequisito)
+    {
+        $sql = "SELECT * FROM debes WHERE idrequisito = :id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id', $idrequisito);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
     public function Obtener($idSeccion)
     {
@@ -112,7 +118,7 @@ class Secciones
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':id', $data->id);
         $stmt->bindParam(':numero', $data->numero);
-        $stmt->bindParam(':titulo', $data->titulo);        
+        $stmt->bindParam(':titulo', $data->titulo);
         return $stmt->execute();
     }
 

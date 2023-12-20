@@ -1,6 +1,6 @@
 </div>
 </section>
-<!-- Jquery Core Js -->
+
 <script src="Assets/plugins/jquery/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
 
@@ -33,5 +33,4 @@
     });
 </script>
 </body>
-
 </html>

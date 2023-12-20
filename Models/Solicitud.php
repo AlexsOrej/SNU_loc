@@ -20,11 +20,16 @@ class Solicitud
     //ASINACION
     public $usuario;
     public $actividad;
+    //HISTORIAL
+     public $tipo;
+     public $usuario_id;
+    
 
     public function __CONSTRUCT()
     {
         try {
             $this->pdo = Database::StartUp();
+           
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -138,6 +143,20 @@ class Solicitud
             $stm = $this->pdo->prepare("SELECT * FROM solicitudes WHERE id='$id' ");
             $stm->execute();
             return $stm->fetch(PDO::FETCH_OBJ);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function GetHistorial($id)
+    {
+        try {
+            $stm = $this->pdo->prepare("SELECT hs.tipo, fecha, concat(usua.nombres,' ',usua.apellidos) as usuario
+            FROM historial_solicitudes  hs
+            JOIN normalizacion_snu.usuarios usua on hs.usuario_id=usua.id
+            WHERE hs.solicitud_id='$id' ");
+            $stm->execute();
+            return $stm->fetchAll(PDO::FETCH_OBJ);
         } catch (Exception $e) {
             die($e->getMessage());
         }
@@ -461,12 +480,12 @@ class Solicitud
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':solicitante', $usuario, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_OBJ); 
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             throw $e;
         }
     }
-    
+
 
     function PerfilSolicitudesInforme($usuario)
     {
@@ -478,7 +497,7 @@ class Solicitud
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':solicitante', $usuario, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_OBJ); 
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             throw $e;
         }
@@ -493,21 +512,49 @@ class Solicitud
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':solicitante', $usuario, PDO::PARAM_STR);
             $stmt->execute();
-            return $stmt->fetch(PDO::FETCH_OBJ); 
+            return $stmt->fetch(PDO::FETCH_OBJ);
         } catch (PDOException $e) {
             throw $e;
         }
     }
     public function comprobarDoc($codigo)
-  {
-    try {
-      $sql = "SELECT CodDocumento, filename FROM documentos where CodDocumento='" . $_REQUEST['codigo'] . "'";
-      $stmt = $this->pdo->prepare($sql);
-      //$stmt->bindParam(':codigo', $codigo, PDO::PARAM_INT);
-      $stmt->execute();
-      return $stmt->fetch(PDO::FETCH_OBJ);
-    } catch (Exception $e) {
-      die($e->getMessage());
+    {
+        try {
+            $sql = "SELECT CodDocumento, filename FROM documentos where CodDocumento='" . $_REQUEST['codigo'] . "'";
+            $stmt = $this->pdo->prepare($sql);
+            //$stmt->bindParam(':codigo', $codigo, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
     }
-  }
+
+
+   
+
+
+
+    public function HistorialSolicitud(Solicitud $data)
+    {
+        try {
+            // Preparar la sentencia SQL
+            $sql = "INSERT INTO historial_solicitudes (solicitud_id, tipo, usuario_id)
+                            VALUES (?, ?, ?)";
+
+            // Preparar y ejecutar la sentencia
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(1, $data->id, PDO::PARAM_INT);
+            $stmt->bindParam(2, $data->Aprobado, PDO::PARAM_STR);
+            $stmt->bindParam(3, $data->usuario_id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            // Devolver true si la inserción fue exitosa
+            return true;
+        } catch (PDOException $e) {
+            // Manejar errores de PDO (puedes ajustar esto según tus necesidades)
+            error_log("Error en la inserción de historial_solicitudes: " . $e->getMessage());
+            return false;
+        }
+    }
 }

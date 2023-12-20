@@ -34,10 +34,10 @@ class PqrsfController
     $graByEst = $this->model->GrafByEst($cliente);
     $graBytipo = $this->model->GrafByTipo($cliente);
     $totalBytipo = $this->model->TotalByTipo($cliente);
-    $totalporcategoria= $this->model->TotalPorCategoria();    
-    $totalsatisfacion= $this->model->TotalSatisfacion();    
-    $promedioasignacion= $this->model->PromedioAsignacion();    
-    $promediorespuesta= $this->model->PromedioRespuesta();    
+    $totalporcategoria = $this->model->TotalPorCategoria();
+    $totalsatisfacion = $this->model->TotalSatisfacion();
+    $promedioasignacion = $this->model->PromedioAsignacion();
+    $promediorespuesta = $this->model->PromedioRespuesta();
     $porcentaje = new Grafico();
     $procesos = new Proceso();
 
@@ -310,8 +310,8 @@ class PqrsfController
     $respuestas->CerrarRespuesta($respuesta->id);
     $email = new NotificacionesController();
     $directorio = "Assets/SoportesPqrs/" . $_REQUEST['id'] . "/"; // Reemplaza 'ruta_de_la_carpeta' con la ruta de la carpeta que quieres inspeccionar
-    $msn="";
-    $file="";
+    $msn = "";
+    $file = "";
     // Obtén una lista de archivos y directorios dentro de la carpeta
     if (is_dir($directorio)) {
       $archivos = scandir($directorio);
@@ -327,7 +327,7 @@ class PqrsfController
     }
     try {
       if ($email->Notificar($asunto, $cuerpo, $destinatario, $file)) {
-        echo '<div class="text-center">Mensaje fue enviado ' . $msn. '</div>';
+        echo '<div class="text-center">Mensaje fue enviado ' . $msn . '</div>';
       }
     } catch (Exception $e) {
       echo "Message could not be sent. Mailer Error: {}";
@@ -596,29 +596,6 @@ class PqrsfController
           $result =  $this->model->UpdateDataFromExcel($data);
         }
         print_r($result);
-
-        //   if (!empty($result)) {
-        //     echo "<div class='card'>";
-        //     echo "<table class='table table-bordered'>";
-        //     echo "<tr>";
-        //     echo "<th>Acción</th>";
-        //     echo "<th>Respuesta</th>";
-        //     echo "<th>Clasificación</th>";
-        //     echo "<th>Estado</th>";
-        //     echo "</tr>";      
-        //     foreach ($result as $value) {
-        //         echo "<tr>";
-        //         echo "<td>" . $value['accion'] . "</td>";
-        //         echo "<td>" . $value['respuesta'] . "</td>";
-        //         echo "<td>" . $value['clasificacion_id'] . "</td>";
-        //         echo "<td>" . $value['estado'] . "</td>";
-        //         echo "</tr>";
-        //     }      
-        //     echo "</table>";
-        //     echo "</div>";
-        // }
-
-
       }
     }
     require_once 'Views/Layout/foot.php';
@@ -680,6 +657,46 @@ class PqrsfController
       }
     } else {
       echo "No se proporcionó el nombre del archivo para eliminar.";
+    }
+  }
+
+
+  /**REGISTRO */
+
+  public function RegistrarPqrsf()
+  {
+    require_once 'Views/Layout/pqrs.php';
+    require_once 'Views/Pqrsf/registrarpqrsf.php';
+    require_once 'Views/Layout/foot.php';
+  }
+
+
+  public function AddPqrs()
+  {
+    date_default_timezone_set('America/Bogota');
+
+    $alm = new Pqrsf();
+
+    $rand = range(1, 10000);
+    shuffle($rand);
+    $randValue = $rand[0];
+    $alm->url = $_SESSION['datos_cliente']->id;
+    $alm->nombres = $_REQUEST['nombres'];
+    $alm->apellidos = $_REQUEST['apellidos'];
+    $alm->tipo_peticion = $_REQUEST['tipo_peticion'];
+    $alm->descripcion = $_REQUEST['descripcion'];
+    $alm->n_contacto = $_REQUEST['n_contacto'];
+    $alm->correo = $_REQUEST['correo'];
+    $alm->estado = "abierto";
+    $alm->radicado = "Rad-" . $randValue;
+    $alm->fecha_registro = date('Y-m-d H:i:s');
+    $alm->empresa = $_REQUEST['empresa'];
+    $resultado = $this->model->Registrar($alm);
+
+    if ($resultado) {
+      echo "Solicitud Registrada con radicado: " . $alm->radicado;
+    } else {
+      echo "Ocurrió un error inesperado, inténtalo de nuevo";
     }
   }
 }

@@ -28,7 +28,7 @@
                         <td><?= $user->email ?></td>
                         <td style="vertical-align: middle;text-align: center;">
                             <?php if ($isAssigned) : ?>
-                                <a class="" data-id="<?= $asignado->user ?>"><i  style="color:#EB2A2A" class="glyphicon glyphicon-trash" ></i></a>
+                                <a class="btn-remove-assign" onclick="Quitar('<?= $asignado->user ?>')" id="" data-id=""><i style="color:#EB2A2A" class="glyphicon glyphicon-trash"></i></a>
                             <?php else : ?>
                                 <input type="checkbox" class="chk" data-id="<?= $asignado->user  ?>">
                             <?php endif; ?>
@@ -87,54 +87,54 @@
         });
     });
 
-    $(document).ready(function() {
-        $('.btn-remove-assign').on('click', function() {
-            var userId = $(this).data('id');
+    // $(document).ready(function() {
+    // $('.btn-remove-assign').on('click',
+    function Quitar(userId) {
+        var userId = userId
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción retirará la asignación del usuario.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, retirar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Enviar solicitud Ajax para retirar la asignación
+                $.ajax({
+                    url: "?c=notificaciones&a=notificar_pqrsf_quitar",
+                    type: "POST",
+                    data: {
+                        userId: userId
+                    },
+                    success: function(response) {
+                        // Manejar la respuesta del servidor
 
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: 'Esta acción retirará la asignación del usuario.',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, retirar',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Enviar solicitud Ajax para retirar la asignación
-                    $.ajax({
-                        url: "?c=notificaciones&a=notificar_pqrsf_quitar",
-                        type: "POST",
-                        data: {
-                            userId: userId
-                        },
-                        success: function(response) {
-                            // Manejar la respuesta del servidor
-                           
-                                Swal.fire(
-                                    'Retirada!',
-                                    'La asignación ha sido retirada.',
-                                    'success',
-                                    false,
-                                );
-                                // Puedes realizar acciones adicionales después del éxito.
-                                setTimeout(function() {
-                                   window.location = '?c=notificaciones&a=notificar_pqrsf';
-                                }, 1501);                         
-                        },
-                        error: function() {
-                            Swal.fire(
-                                'Error',
-                                'Hubo un problema al comunicarse con el servidor.',
-                                'error'
-                            );
-                        }
-                    });
-                }
-            });
+                        Swal.fire(
+                            'Retirada!',
+                            'La asignación ha sido retirada.',
+                            'success',
+                            false,
+                        );
+                        // Puedes realizar acciones adicionales después del éxito.
+                        setTimeout(function() {
+                            window.location = '?c=notificaciones&a=notificar_pqrsf';
+                        }, 1501);
+                    },
+                    error: function() {
+                        Swal.fire(
+                            'Error',
+                            'Hubo un problema al comunicarse con el servidor.',
+                            'error'
+                        );
+                    }
+                });
+            }
         });
-    });
+    };
+    // });
 </script>
 
 </html>

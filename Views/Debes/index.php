@@ -5,11 +5,11 @@
                 <div class="header">
                     <div class="row clearfix">
                         <div class="col-xs-12 col-sm-6">
-                            <h2 class="title">Seccion</h2>
-                            <h4 class="mute"></h4>
+                            <h2 class="title">Requisito</h2>
+                            <h4 class="mute"><?=$requisitos->numero.'. '.$requisitos->descripcion ?></h4>
                         </div>
                         <div class="col-xs-12 col-sm-6 align-right">
-                            <button class="neu" id="registrarseccion"></button>
+                            <button class="neu" id="registrarseccion">Registrar Debe</button>
                         </div>
                     </div>
                 </div>
@@ -19,20 +19,20 @@
                         <thead>
                             <tr>
                                 <th>Número</th>
-                                <th>Descripción</th>                              
+                                <th>Descripción</th>
                                 <th>Opciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($secciones as $seccion) : ?>
+                            <?php foreach ($debe as $debes) : ?>
                                 <tr>
-                                    <td><?= $seccion->numero ?></td>
-                                    <td><?= ucwords($seccion->titulo) ?></td>                                                                     
+                                    <td><?= $debes->numero ?></td>
+                                    <td><?= ucwords($debes->descripcion) ?></td>
                                     <td>
-                                        <a onclick="Editar('<?= $seccion->id ?>')" title="Edita los datos de la norma" data-valor="<?= $seccion->id ?>"> <span class="glyphicon glyphicon-edit"></span></a>
-                                        <a onclick="Quitar('<?= $seccion->id ?>')" title="Elimina la norma">
+                                        <a onclick="Editar('<?= $debes->id ?>')" title="Edita los datos de la norma" data-valor="<?= $debes->id ?>"> <span class="glyphicon glyphicon-edit"></span></a>
+                                        <a onclick="Quitar('<?= $debes->id ?>')" title="Elimina la norma">
                                             <span class="glyphicon glyphicon-trash"></span></a>
-                                        <a href="?c=requisitos&a=index&seccion=<?= $seccion->id ?>" title="Gestionar la secciones de la norma"> <span class="glyphicon glyphicon-list"></span></a></a>
+                                        <a href="?c=debes&a=index&requisito=<?= $debes->id ?>" title="Gestionar la secciones de la norma"> <span class="glyphicon glyphicon-list"></span></a></a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -49,8 +49,10 @@
     $(document).on('click', '#registrarseccion', function(e) {
         $.ajax({
             type: "post",
-            url: "?c=secciones&a=crud",
-            data:{norma_id:<?=$_REQUEST['id']?>},
+            url: "?c=debes&a=crud",
+            data: {
+                requisito_id: <?= $_REQUEST['requisito'] ?>
+            },
             beforeSend: function() {
                 $('#resultado').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
             },
@@ -66,7 +68,7 @@
                 norma_id: valor
             },
             type: "post",
-            url: "?c=Secciones&a=crud",
+            url: "?c=debes&a=crud",
             beforeSend: function() {
                 $('#resultado').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
             },
@@ -95,7 +97,7 @@
                         norma_id: valor
                     },
                     type: 'post',
-                    url: '?c=secciones&a=Eliminar',
+                    url: '?c=debes&a=Eliminar',
                     success: function(response) {
                         Swal.fire({
                             icon: 'success',

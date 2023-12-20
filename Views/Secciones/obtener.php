@@ -1,56 +1,60 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="header">
-                    <div class="row clearfix">
-                        <div class="col-xs-12 col-sm-6">
-                            <h2 class="title">Seccion</h2>
-                            <h4 class="mute"></h4>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 align-right">
-                            <button class="neu" id="registrarseccion"></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="body">
-                    <p class="text">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>Número</th>
-                                <th>Descripción</th>                              
-                                <th>Opciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($secciones as $seccion) : ?>
-                                <tr>
-                                    <td><?= $seccion->numero ?></td>
-                                    <td><?= ucwords($seccion->titulo) ?></td>                                                                     
-                                    <td>
-                                        <a onclick="Editar('<?= $seccion->id ?>')" title="Edita los datos de la norma" data-valor="<?= $seccion->id ?>"> <span class="glyphicon glyphicon-edit"></span></a>
-                                        <a onclick="Quitar('<?= $seccion->id ?>')" title="Elimina la norma">
-                                            <span class="glyphicon glyphicon-trash"></span></a>
-                                        <a href="?c=requisitos&a=index&seccion=<?= $seccion->id ?>" title="Gestionar la secciones de la norma"> <span class="glyphicon glyphicon-list"></span></a></a>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                    </p>
-                </div>
+<div class="card">
+    <div class="header">
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-6">
+                <h2 class="title">Seccion</h2>
+            </div>
+            <div class="col-xs-12 col-sm-6 align-right">
+
             </div>
         </div>
-        <div class="col-md-6" id="resultado"></div>
+    </div>
+    <div class="body">
+        <p class="text">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Número</th>
+                    <th>Descripción</th>
+                    <th>Requisitos/Debes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($secciones as $seccion) : ?>
+                    <tr>
+                        <td><?= $seccion->numero ?></td>
+                        <td><?= ucwords($seccion->titulo) ?></td>
+                        <td>
+                            <a data-toggle="modal" href='#my-modal' onclick="Requisitos('<?= $seccion->id ?>')" title="Edita los datos de la norma" data-valor="<?= $seccion->id ?>">
+                                Ver Requisitos
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        </p>
     </div>
 </div>
+
+<div id="my-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" >
+        <div class="modal-content">
+            <div class="modal-body" id="resultado">
+                <p>Content</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).on('click', '#registrarseccion', function(e) {
         $.ajax({
             type: "post",
             url: "?c=secciones&a=crud",
-            data:{norma_id:<?=$_REQUEST['id']?>},
+            data: {
+                norma_id: <?= $_REQUEST['id'] ?>
+            },
             beforeSend: function() {
                 $('#resultado').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
             },
@@ -60,13 +64,13 @@
         });
     })
 
-    function Editar(valor) {
+    function Requisitos(valor) {
         $.ajax({
             data: {
-                norma_id: valor
+                seccion: valor
             },
             type: "post",
-            url: "?c=Secciones&a=crud",
+            url: "?c=requisitos&a=obtener",
             beforeSend: function() {
                 $('#resultado').html("<div class='text-center'> <div class='preloader'><div class='spinner-layer pl-red'><div class='circle-clipper left'><div class='circle'></div></div><div class='circle-clipper right'><div class='circle'></div></div></div></div><p>Cargando Información</p> </div>");
             },

@@ -190,9 +190,9 @@
                             title: 'El registro se realizo con éxito',
                             timer: 1500
                         }, ),
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 1500)
+                       setTimeout(function() {
+                        //   window.location.reload();
+                       }, 1500)
                 },
                 error: function() {
                     Swal.fire({
